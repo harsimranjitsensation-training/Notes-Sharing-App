@@ -29,3 +29,18 @@ export const createNote = async (req, res) => {
     });
   }
 };
+
+export const getAllNotes = async (req, res) => {
+  try {
+    const notes = await Notes.find();
+    res.status(200).json({
+      message: "Note fetched successfully",
+      notes: notes,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error occured",
+      error: error.message,
+    });
+  }
+};

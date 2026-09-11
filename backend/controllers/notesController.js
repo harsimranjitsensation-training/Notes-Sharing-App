@@ -68,10 +68,10 @@ export const updateNote = async (req, res) => {
       createdBy: req.user.id,
     });
 
-    if(!note){
+    if (!note) {
       res.status(400).json({
-        message: "Note not found"
-      })
+        message: "Note not found",
+      });
     }
 
     note.title = title;
@@ -82,8 +82,27 @@ export const updateNote = async (req, res) => {
     await note.save();
     res.status(200).json({
       message: "Note updated successfully",
-      note : note,
-    })
+      note: note,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error occured",
+      error: error.message,
+    });
+  }
+};
+
+export const deleteNote = async (req, res) => {
+  try {
+    const note = await Notes.findOne({
+      _id: req.params.id,
+      createdBy: req.user.id,
+    });
+
+    await note.deleteOne();
+    res.status(200).json({
+      message: "Note deleted successfully",
+    });
   } catch (error) {
     res.status(500).json({
       message: "Error occured",
